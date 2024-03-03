@@ -6,6 +6,9 @@ public class ModelClass {
     private int id, status;
     private String task;
 
+    public ModelClass() {
+    }
+
     public int getId() {
         return id;
     }

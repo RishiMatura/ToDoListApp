@@ -17,17 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
-    ToDoListAdapter adapter;
-    List<ModelClass> taskList = new ArrayList<>();
-    FloatingActionButton fab;
+
+    private RecyclerView recyclerView;
+    private ToDoListAdapter adapter;
+    private List<ModelClass> taskList = new ArrayList<>();
+    private FloatingActionButton fab;
+    private TaskViewModel taskViewModel; // Added TaskViewModel
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fab = findViewById(R.id.fab);
 
+        // Initialize TaskViewModel
+        taskViewModel = new TaskViewModel(getApplication());
+
+        fab = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -39,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Show the bottom sheet dialog fragment to add a new task
-                AddNewTaskDialog dialog = AddNewTaskDialog.newInstance();
+                taskViewModel = new TaskViewModel(getApplication()); // Pass application context
+
+                AddNewTaskDialog dialog = new AddNewTaskDialog(MainActivity.this, taskViewModel); // Pass TaskViewModel
                 dialog.show(getSupportFragmentManager(), "AddNewTaskDialog");
             }
         });
@@ -60,11 +67,20 @@ public class MainActivity extends AppCompatActivity {
         taskList.add(task);
         taskList.add(task);
 
-//        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
+    // Handle checkbox click event (implement logic to update task status and notify adapter)
     public void onCheckBoxClick(View view) {
         CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
-        checkBox.setChecked(!checkBox.isChecked());
+        int position = recyclerView.getChildAdapterPosition(view); // Get item position
+
+        if (position != RecyclerView.NO_POSITION) {
+            taskViewModel = new TaskViewModel(getApplication()); // Pass application context
+
+            ModelClass task = taskList.get(position);
+            task.setStatus(checkBox.isChecked() ? 1 : 0); // Update task status
+            adapter.notifyItemChanged(position); // Notify adapter about change
+        }
     }
 }

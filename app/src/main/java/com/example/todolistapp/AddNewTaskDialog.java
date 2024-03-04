@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,15 +22,10 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
     public static final String TAG = "ActionBottomDialog";
     private EditText newTaskText;
     private Button newTaskSaveButton;
+    private TaskViewModel taskViewModel; // Injected TaskViewModel
 
-    public static AddNewTaskDialog newInstance() {
-        return new AddNewTaskDialog();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(STYLE_NORMAL, R.style.DialogStyle);
+    public AddNewTaskDialog(Context context, TaskViewModel taskViewModel) {
+        this.taskViewModel = taskViewModel;
     }
 
     @Override
@@ -46,25 +42,16 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 String taskText = newTaskText.getText().toString();
-
-                    Context context = requireActivity(); // Use requireActivity() for non-null context
-                    DatabaseHelper databaseHelper = DatabaseHelper.getDB(context);
-                    databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 0));
-                    // Call saveTask with the obtained context
-                    saveTask(context, taskText);
-
-
+                if (!taskText.isEmpty()) {
+                    // Use the injected TaskViewModel to save the task
+                    taskViewModel.saveTask(taskText);
                     dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Empty Task", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         return view;
     }
-
-    private void saveTask(Context context, String taskText) {
-        // Implement logic to save the new task to the database using your DatabaseHelper
-        // or another appropriate approach.
-//        databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 0));
-//    }
-}}
-
+}

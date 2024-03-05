@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todolistapp.Database.DatabaseHelper;
+import com.example.todolistapp.Database.Tasks;
 import com.example.todolistapp.R;
 import com.example.todolistapp.RecyclerViewFiles.ModelClass;
 import com.example.todolistapp.RecyclerViewFiles.ToDoListAdapter;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private ToDoListAdapter adapter;
     private List<ModelClass> taskList = new ArrayList<>();
     private FloatingActionButton fab;
+    private DatabaseHelper databaseHelper; // Database helper instance
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ToDoListAdapter(this, taskList);
         recyclerView.setAdapter(adapter);
 
+        databaseHelper = DatabaseHelper.getDB(this);
+
+
         // Set a click listener for the FAB button
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +55,29 @@ public class MainActivity extends AppCompatActivity {
 
         // Add dummy tasks for testing
         addDummyTasks();
+        loadTasks();
+
     }
+
+
+    private void loadTasks() {
+        List<Tasks> tasks = databaseHelper.tasksDAO().getAllTasks();
+        taskList.clear();
+        for (Tasks task : tasks) {
+            // Convert Tasks object to ModelClass object
+            ModelClass model = new ModelClass();
+            model.setTask(task.getTask());
+            model.setId(task.getId());
+            model.setStatus(task.getStatus());
+            taskList.add(model);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+
+
+
+
 
     private void addDummyTasks() {
         ModelClass task = new ModelClass();

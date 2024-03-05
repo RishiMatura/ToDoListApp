@@ -22,20 +22,18 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
     public static final String TAG = "ActionBottomDialog";
     private EditText newTaskText;
     private Button newTaskSaveButton;
-    private TaskViewModel taskViewModel; // Injected TaskViewModel
+    private DatabaseHelper databaseHelper; // Database helper instance
+    private Context context;
 
-    private DatabaseHelper databaseHelper;
-    public AddNewTaskDialog(Context context, TaskViewModel taskViewModel) {
-        this.taskViewModel = taskViewModel;
+    public AddNewTaskDialog(Context context) {
+        this.context = context;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-
         databaseHelper = DatabaseHelper.getDB(getContext());
-
 
         View view = inflater.inflate(R.layout.new_task, container, false);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -48,9 +46,8 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 String taskText = newTaskText.getText().toString();
                 if (!taskText.isEmpty()) {
-                    // Use the injected TaskViewModel to save the task
-                        databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 1));
-//                    taskViewModel.saveTask(taskText);
+                    // Insert task into the database
+                    databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 1));
                     dismiss();
                 } else {
                     Toast.makeText(getContext(), "Empty Task", Toast.LENGTH_SHORT).show();

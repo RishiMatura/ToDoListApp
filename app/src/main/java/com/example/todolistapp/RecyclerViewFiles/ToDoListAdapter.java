@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         holder.checkBox.setText(item.getTask());
         holder.checkBox.setChecked(toBoolean(item.getStatus()));
 
+//        holder.rowLayout.
+
     }
 private boolean toBoolean(int n){
     return (n!=0);
@@ -53,9 +56,11 @@ private boolean toBoolean(int n){
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         CheckBox checkBox;
+        RelativeLayout rowLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.todoCheckBox);
+            rowLayout = itemView.findViewById(R.id.row_layout);
         }
     }
 }

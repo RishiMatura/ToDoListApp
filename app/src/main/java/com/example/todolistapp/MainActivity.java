@@ -1,3 +1,4 @@
+// MainActivity.java
 package com.example.todolistapp;
 
 import android.os.Bundle;
@@ -22,15 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private ToDoListAdapter adapter;
     private List<ModelClass> taskList = new ArrayList<>();
     private FloatingActionButton fab;
-    private TaskViewModel taskViewModel; // Added TaskViewModel
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Initialize TaskViewModel
-        taskViewModel = new TaskViewModel(getApplication());
 
         fab = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.recyclerView);
@@ -43,10 +40,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Show the bottom sheet dialog fragment to add a new task
-                taskViewModel = new TaskViewModel(getApplication()); // Pass application context
-
-                AddNewTaskDialog dialog = new AddNewTaskDialog(MainActivity.this, taskViewModel); // Pass TaskViewModel
+                // Show the AddNewTaskDialog
+                AddNewTaskDialog dialog = new AddNewTaskDialog(MainActivity.this);
                 dialog.show(getSupportFragmentManager(), "AddNewTaskDialog");
             }
         });
@@ -70,14 +65,24 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+
+    // Method to add a new task to the RecyclerView
+    public void addTask(String taskText) {
+        ModelClass task = new ModelClass();
+        task.setTask(taskText);
+        task.setId(taskList.size() + 1); // Incremental ID
+        task.setStatus(0);
+
+        taskList.add(task);
+        adapter.notifyDataSetChanged();
+    }
+
     // Handle checkbox click event (implement logic to update task status and notify adapter)
     public void onCheckBoxClick(View view) {
         CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
         int position = recyclerView.getChildAdapterPosition(view); // Get item position
 
         if (position != RecyclerView.NO_POSITION) {
-            taskViewModel = new TaskViewModel(getApplication()); // Pass application context
-
             ModelClass task = taskList.get(position);
             task.setStatus(checkBox.isChecked() ? 1 : 0); // Update task status
             adapter.notifyItemChanged(position); // Notify adapter about change

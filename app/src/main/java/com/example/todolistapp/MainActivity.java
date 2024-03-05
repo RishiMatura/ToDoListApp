@@ -4,6 +4,7 @@ package com.example.todolistapp;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private List<ModelClass> taskList = new ArrayList<>();
     private FloatingActionButton fab;
     private DatabaseHelper databaseHelper; // Database helper instance
+    EditText editText;
 
 
     @Override
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         databaseHelper = DatabaseHelper.getDB(this);
+
 
 
         // Set a click listener for the FAB button
@@ -76,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
     private void addDummyTasks() {
         ModelClass task = new ModelClass();
         task.setTask("This is a task");
@@ -96,15 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Method to add a new task to the RecyclerView
-    public void addTask(String taskText) {
-        ModelClass task = new ModelClass();
-        task.setTask(taskText);
-        task.setId(taskList.size() + 1); // Incremental ID
-        task.setStatus(0);
-
-        taskList.add(task);
-        adapter.notifyDataSetChanged();
-    }
+//    public void addTask(String taskText) {
+//        ModelClass task = new ModelClass();
+//        task.setTask(taskText);
+//        task.setId(taskList.size() + 1); // Incremental ID
+//        task.setStatus(0);
+//
+//        taskList.add(task);
+//        adapter.notifyDataSetChanged();
+//    }
 
     // Handle checkbox click event (implement logic to update task status and notify adapter)
     public void onCheckBoxClick(View view) {

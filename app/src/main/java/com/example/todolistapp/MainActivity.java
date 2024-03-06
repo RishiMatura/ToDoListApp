@@ -96,20 +96,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Handle checkbox click event (implement logic to update task status and notify adapter)
-    public void onCheckBoxClick(View view) {
-        CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
-        int position = recyclerView.getChildAdapterPosition(view); // Get item position
-
-        if (position != RecyclerView.NO_POSITION) {
-            ModelClass task = taskList.get(position);
-            task.setStatus(checkBox.isChecked() ? 1 : 0); // Update task status
-            adapter.notifyItemChanged(position); // Notify adapter about change
-        }
-    }
-
-
 //    public void onCheckBoxClick(View view) {
 //        CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
-//        checkBox.setChecked(!checkBox.isChecked());
+//        int position = recyclerView.getChildAdapterPosition(view); // Get item position
+//
+//        if (position != RecyclerView.NO_POSITION) {
+//            ModelClass task = taskList.get(position);
+//            task.setStatus(checkBox.isChecked() ? 1 : 0); // Update task status
+//            adapter.notifyItemChanged(position); // Notify adapter about change
+//        }
 //    }
+
+
+    public void onCheckBoxClick(View view) {
+        CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
+        checkBox.setChecked(!checkBox.isChecked());
+    }
 }

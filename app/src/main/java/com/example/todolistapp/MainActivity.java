@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         databaseHelper = DatabaseHelper.getDB(this);
+        loadTasks();
+
 
 
 
@@ -57,13 +59,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Add dummy tasks for testing
-        addDummyTasks();
-        loadTasks();
+//        addDummyTasks();
+//        loadTasks();
 
     }
 
 
-    private void loadTasks() {
+    void loadTasks() {
         List<Tasks> tasks = databaseHelper.tasksDAO().getAllTasks();
         taskList.clear();
         for (Tasks task : tasks) {
@@ -76,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
     }
-
-
 
     private void addDummyTasks() {
         ModelClass task = new ModelClass();
@@ -95,17 +95,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // Method to add a new task to the RecyclerView
-//    public void addTask(String taskText) {
-//        ModelClass task = new ModelClass();
-//        task.setTask(taskText);
-//        task.setId(taskList.size() + 1); // Incremental ID
-//        task.setStatus(0);
-//
-//        taskList.add(task);
-//        adapter.notifyDataSetChanged();
-//    }
-
     // Handle checkbox click event (implement logic to update task status and notify adapter)
     public void onCheckBoxClick(View view) {
         CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
@@ -117,4 +106,10 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyItemChanged(position); // Notify adapter about change
         }
     }
+
+
+//    public void onCheckBoxClick(View view) {
+//        CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
+//        checkBox.setChecked(!checkBox.isChecked());
+//    }
 }

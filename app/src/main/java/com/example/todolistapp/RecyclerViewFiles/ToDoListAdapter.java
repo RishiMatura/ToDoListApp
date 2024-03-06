@@ -21,11 +21,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     Context context;
     private List<ModelClass> taskList;
 
-    public void setTasks(List<ModelClass> tasks) {
-        taskList.clear(); // Clear existing tasks
-        taskList.addAll(tasks); // Add new tasks
-        notifyDataSetChanged(); // Notify adapter of data change
-    }
+//    public void setTasks(List<ModelClass> tasks) {
+//        taskList.clear(); // Clear existing tasks
+//        taskList.addAll(tasks); // Add new tasks
+//        notifyDataSetChanged(); // Notify adapter of data change
+//    }
 
     public ToDoListAdapter(Context context, List<ModelClass> todoList) {
         this.context = context;

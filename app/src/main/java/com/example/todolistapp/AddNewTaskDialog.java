@@ -47,8 +47,11 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
                 String taskText = newTaskText.getText().toString();
                 if (!taskText.isEmpty()) {
                     // Insert task into the database
-                    databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 1));
+                    databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 0));
+
                     dismiss();
+                    ((MainActivity) context).loadTasks();
+
                 } else {
                     Toast.makeText(getContext(), "Empty Task", Toast.LENGTH_SHORT).show();
                 }

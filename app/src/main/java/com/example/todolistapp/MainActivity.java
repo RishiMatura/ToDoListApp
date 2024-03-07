@@ -2,6 +2,7 @@
 package com.example.todolistapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         // Set a click listener for the FAB button
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
             taskList.add(model);
         }
         adapter.notifyDataSetChanged();
+        adapter.notifyItemInserted(tasks.size());
+
+        recyclerView.scrollToPosition(tasks.size());
     }
 
     private void addDummyTasks() {
@@ -111,5 +116,16 @@ public class MainActivity extends AppCompatActivity {
     public void onCheckBoxClick(View view) {
         CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
         checkBox.setChecked(!checkBox.isChecked());
+    }
+
+    public void appendToList(String taskText) {
+        ModelClass model = new ModelClass();
+        model.setTask(taskText);
+        model.setId(taskList.get(
+                taskList.size()-1).getId()+1
+        );
+        model.setStatus(0);
+        taskList.add(model);
+
     }
 }

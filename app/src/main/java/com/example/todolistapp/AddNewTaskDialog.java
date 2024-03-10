@@ -51,6 +51,7 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
 
                     dismiss();
 //                    ((MainActivity) context).loadTasks();
+
                     ((MainActivity) context).appendToList(taskText);
 
                 } else {

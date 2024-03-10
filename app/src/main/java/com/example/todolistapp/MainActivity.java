@@ -25,10 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ToDoListAdapter adapter;
-    private List<ModelClass> taskList = new ArrayList<>();
+    private List<ModelClass> taskList = new ArrayList<>();   // to be used for RecyclerView
     private FloatingActionButton fab;
     private DatabaseHelper databaseHelper; // Database helper instance
-    EditText editText;
 
 
     @Override
@@ -66,6 +65,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+/*
+    Whats happening in this loadTask() function --
+
+    This function's sole purpose is to propagate the recyclerView with the full database for the first time
+    as used in the MainActivity. For adding new elements
+
+        1) We create a list of type objects of Tasks.class which contains the getter and setter for database.
+        this list contains all the entries from the database.
+
+        2) The loop iterates over each Tasks object retrieved from the database.
+
+        3) Inside the loop each of these tasks are taking place --
+
+            a)  Creating a new instance/object of ModelClass
+            b)  We set the values like Id, Task, Status for each object of the ModelClass.
+            c)  We add this object named model in the taskList.
+ */
+
+
 
     void loadTasks() {
         List<Tasks> tasks = databaseHelper.tasksDAO().getAllTasks();
@@ -73,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         for (Tasks task : tasks) {
             // Convert Tasks object to ModelClass object
             ModelClass model = new ModelClass();
+
             model.setTask(task.getTask());
             model.setId(task.getId());
             model.setStatus(task.getStatus());
@@ -80,24 +99,23 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
         adapter.notifyItemInserted(tasks.size());
-
         recyclerView.scrollToPosition(tasks.size());
     }
 
-    private void addDummyTasks() {
-        ModelClass task = new ModelClass();
-        task.setTask("This is a task");
-        task.setId(1);
-        task.setStatus(0);
-
-        taskList.add(task);
-        taskList.add(task);
-        taskList.add(task);
-        taskList.add(task);
-        taskList.add(task);
-
-        adapter.notifyDataSetChanged();
-    }
+//    private void addDummyTasks() {
+//        ModelClass task = new ModelClass();
+//        task.setTask("This is a task");
+//        task.setId(1);
+//        task.setStatus(0);
+//
+//        taskList.add(task);
+//        taskList.add(task);
+//        taskList.add(task);
+//        taskList.add(task);
+//        taskList.add(task);
+//
+//        adapter.notifyDataSetChanged();
+//    }
 
 
     // Handle checkbox click event (implement logic to update task status and notify adapter)
@@ -121,9 +139,7 @@ public class MainActivity extends AppCompatActivity {
     public void appendToList(String taskText) {
         ModelClass model = new ModelClass();
         model.setTask(taskText);
-        model.setId(taskList.get(
-                taskList.size()-1).getId()+1
-        );
+        model.setId(taskList.get(taskList.size()-1).getId()+1);
         model.setStatus(0);
         taskList.add(model);
 

@@ -3,6 +3,7 @@ package com.example.todolistapp.RecyclerViewFiles;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 AlertDialog.Builder builder = new AlertDialog.Builder(context)
                         .setTitle("Delete Task")
                         .setMessage("Delete Task Entry?")
-//                        .setIcon(R.drawable.baseline_delete_24)
+                        .setIcon(R.drawable.baseline_delete_24)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -73,13 +74,17 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                                 // Remove the task from the task list
                                 taskList.remove(position);
                                 notifyItemRemoved(position);
-                                notifyItemRangeChanged(position, taskList.size());
 
                                 // Delete the task from the database
                                 Tasks tasksToDelete = new Tasks();
                                 tasksToDelete.setId(task.getId()); // Assuming getId returns the task ID
-                                databaseHelper.tasksDAO().deleteTask(tasksToDelete);
+                                long id = task.getId();
+//                                Log.d("Database", "Entry::: " + taskList.get(position).getId() + "*********************");
 
+                                databaseHelper.tasksDAO().deleteTaskById(id);
+//                                databaseHelper.tasksDAO().deleteTask(tasksToDelete);
+
+                                notifyItemRangeChanged(position, taskList.size());
 
                             }
                         })

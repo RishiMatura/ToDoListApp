@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         model.setId(taskList.get(taskList.size()-1).getId()+1);
         model.setStatus(0);
         taskList.add(model);
+        Log.d("Data", "Entry::: " + model.getId() + "*********************");
 
     }
 }

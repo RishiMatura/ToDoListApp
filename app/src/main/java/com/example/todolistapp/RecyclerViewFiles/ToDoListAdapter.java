@@ -1,25 +1,26 @@
 package com.example.todolistapp.RecyclerViewFiles;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Handler;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder> {
 
     Context context;
-    private List<ModelClass> taskList;
+    List<ModelClass> taskList;
 
 //    public void setTasks(List<ModelClass> tasks) {
 //        taskList.clear(); // Clear existing tasks
@@ -29,10 +30,9 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
     public ToDoListAdapter(Context context, List<ModelClass> todoList) {
         this.context = context;
-        this.todoList = todoList;
+        this.taskList = todoList;
     }
 
-    List<ModelClass> todoList;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,11 +44,41 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 //        holder.checkBox.setImageResource(todoList.get(position));
-        final ModelClass item = todoList.get(position);
+        final ModelClass item = taskList.get(position);
         holder.checkBox.setText(item.getTask());
         holder.checkBox.setChecked(toBoolean(item.getStatus()));
 
-//        holder.rowLayout.
+
+        holder.rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                        .setTitle("Delete Task")
+                        .setMessage("Delete Task Entry?")
+//                        .setIcon(R.drawable.baseline_delete_24)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                taskList.remove(position);
+                                // Notify the adapter about the removal
+                                notifyItemRemoved(position);
+
+                                // Notify the adapter about the range change to update positions
+                                notifyItemRangeChanged(position, taskList.size());
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(context, "Be Careful !", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                builder.show();
+                return true;
+            }
+        });
 
     }
 private boolean toBoolean(int n){
@@ -57,7 +87,7 @@ private boolean toBoolean(int n){
 }
     @Override
     public int getItemCount() {
-        return todoList.size();
+        return taskList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

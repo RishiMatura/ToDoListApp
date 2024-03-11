@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapp.Database.DatabaseHelper;
 import com.example.todolistapp.Database.Tasks;
+import com.example.todolistapp.MainActivity;
 import com.example.todolistapp.R;
 
 import java.util.List;
@@ -67,22 +68,18 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                // Get the task object at the clicked position
                                 ModelClass task = taskList.get(position);
 
-                                // Remove the task from the list
+                                // Remove the task from the task list
                                 taskList.remove(position);
-
-                                // Notify the adapter about the removal
                                 notifyItemRemoved(position);
-
-                                // Notify the adapter about the range change to update positions
                                 notifyItemRangeChanged(position, taskList.size());
 
                                 // Delete the task from the database
-                                Tasks tasks = new Tasks();
-                                tasks.setId(task.getId()); // Assuming getId returns the task ID
-                                databaseHelper.tasksDAO().deleteTask(tasks);
+                                Tasks tasksToDelete = new Tasks();
+                                tasksToDelete.setId(task.getId()); // Assuming getId returns the task ID
+                                databaseHelper.tasksDAO().deleteTask(tasksToDelete);
+
 
                             }
                         })

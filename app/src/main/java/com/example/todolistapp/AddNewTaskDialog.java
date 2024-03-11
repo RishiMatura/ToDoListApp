@@ -60,6 +60,7 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
             }
         });
 
+
         return view;
     }
 }

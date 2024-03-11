@@ -2,6 +2,7 @@ package com.example.todolistapp.Database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 @Entity(tableName = "Tasks")
 public class Tasks  {
@@ -17,6 +18,7 @@ public class Tasks  {
         this.task = task;
         this.status = status;
     }
+
 
     public int getId() {
         return id;
@@ -40,5 +42,10 @@ public class Tasks  {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Ignore
+    public Tasks(){
+
     }
 }

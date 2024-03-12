@@ -136,10 +136,10 @@ public class MainActivity extends AppCompatActivity {
         checkBox.setChecked(!checkBox.isChecked());
     }
 
-    public void appendToList(String taskText) {
+    public void appendToList(String taskText, long autogenid) {
         ModelClass model = new ModelClass();
         model.setTask(taskText);
-        model.setId(taskList.get(taskList.size()-1).getId()+1);
+        model.setId(autogenid);
         model.setStatus(0);
         taskList.add(model);
         Log.d("Data", "Entry::: " + model.getId() + "*********************");

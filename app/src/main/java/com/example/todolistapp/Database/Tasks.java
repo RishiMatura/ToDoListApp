@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "Tasks")
 public class Tasks  {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id = 0;
 
     @ColumnInfo(name = "Tasks")
     private String task;
@@ -20,11 +20,11 @@ public class Tasks  {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

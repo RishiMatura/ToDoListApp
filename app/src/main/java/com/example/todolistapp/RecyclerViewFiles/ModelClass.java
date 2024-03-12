@@ -3,17 +3,18 @@ package com.example.todolistapp.RecyclerViewFiles;
 import android.widget.EditText;
 
 public class ModelClass {
-    private int id, status;
+    private long id;
+    private int status;
     private String task;
 
     public ModelClass() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

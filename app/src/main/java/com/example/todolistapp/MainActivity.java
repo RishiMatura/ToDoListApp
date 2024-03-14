@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapp.Database.DatabaseHelper;
 import com.example.todolistapp.Database.Tasks;
-import com.example.todolistapp.R;
 import com.example.todolistapp.RecyclerViewFiles.ModelClass;
 import com.example.todolistapp.RecyclerViewFiles.ToDoListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,15 +25,22 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ToDoListAdapter adapter;
-    private List<ModelClass> taskList = new ArrayList<>();   // to be used for RecyclerView
+    private List <ModelClass> taskList = new ArrayList<>();   // to be used for RecyclerView
     private FloatingActionButton fab;
     private DatabaseHelper databaseHelper; // Database helper instance
+
+//    RelativeLayout rowLayout;
+RelativeLayout rowLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        View view  =getLayoutInflater().inflate(R.layout.task_layout, null);
+
+         rowLayout = view.findViewById(R.id.row_layout);
 
         fab = findViewById(R.id.fab);
         recyclerView = findViewById(R.id.recyclerView);
@@ -58,10 +65,18 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show(getSupportFragmentManager(), "AddNewTaskDialog");
             }
         });
+Log.d("testingRishi", "before");
+        rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MainActivity.this, "Finally", Toast.LENGTH_SHORT).show();
+                Log.d("testingRishi", "during");
 
-        // Add dummy tasks for testing
-//        addDummyTasks();
-//        loadTasks();
+                return true;
+            }
+        });
+Log.d("testingRishi", "after");
+
 
     }
 
@@ -136,13 +151,16 @@ public class MainActivity extends AppCompatActivity {
         checkBox.setChecked(!checkBox.isChecked());
     }
 
-    public void appendToList(String taskText, long autogenid) {
+    public void appendToList(String taskText, long autoGenId) {
         ModelClass model = new ModelClass();
         model.setTask(taskText);
-        model.setId(autogenid);
+        model.setId(autoGenId);
         model.setStatus(0);
         taskList.add(model);
         Log.d("Data", "Entry::: " + model.getId() + "*********************");
 
     }
+
+
+
 }

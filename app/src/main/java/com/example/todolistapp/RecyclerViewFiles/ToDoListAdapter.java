@@ -3,11 +3,12 @@ package com.example.todolistapp.RecyclerViewFiles;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -16,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapp.Database.DatabaseHelper;
 import com.example.todolistapp.Database.Tasks;
-import com.example.todolistapp.MainActivity;
 import com.example.todolistapp.R;
 
 import java.util.List;
@@ -61,43 +61,51 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             @Override
             public boolean onLongClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context)
-                        .setTitle("Delete Task")
-                        .setMessage("Delete Task Entry?")
-                        .setIcon(R.drawable.baseline_delete_24)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                PopupMenu popupMenu = new PopupMenu(context, v);
+                popupMenu.inflate(R.menu.popup_menu);
 
-                                ModelClass task = taskList.get(position);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        // Get the ID of the clicked menu item
+                        int itemId = item.getItemId();
 
-                                // Remove the task from the task list
-                                taskList.remove(position);
-                                notifyItemRemoved(position);
+                        // Check the ID of the clicked menu item and perform the corresponding action
+                        if (itemId == R.id.menu_option1) {
+                            // Handle menu option 1 click
+                            Toast.makeText(context, "Option 1 clicked", Toast.LENGTH_SHORT).show();
+                            return true;
+                        } else if (itemId == R.id.menu_option2) {
+                            // Handle menu option 2 click
 
-                                // Delete the task from the database
-                                Tasks tasksToDelete = new Tasks();
-                                tasksToDelete.setId(task.getId()); // Assuming getId returns the task ID
-                                long id = task.getId();
-//                                Log.d("Database", "Entry::: " + taskList.get(position).getId() + "*********************");
 
-                                databaseHelper.tasksDAO().deleteTaskById(id);
-//                                databaseHelper.tasksDAO().deleteTask(tasksToDelete);
+                            deleteTaskFun(position);
+                            return true;
+                        }
 
-                                notifyItemRangeChanged(position, taskList.size());
 
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(context, "Be Careful !", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                builder.show();
+                        return false; // Return false if the clicked item is not handled
+                    }
+                });
+                popupMenu.show();
+
                 return true;
             }
         });
+
+
+//        holder.rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//
+
+
+//              Used a function to delete the entry and embedded it inside the popup menu
+
+
+//                return true;
+//            }
+//        });
 
     }
 private boolean toBoolean(int n){
@@ -119,4 +127,43 @@ private boolean toBoolean(int n){
             rowLayout = itemView.findViewById(R.id.row_layout);
         }
     }
+//Function to delete task and its reference is used inside the context menu (popup Menu)
+    public void deleteTaskFun(int position){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle("Delete Task")
+                .setMessage("Delete Task Entry?")
+                .setIcon(R.drawable.baseline_delete_24)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ModelClass task = taskList.get(position);
+
+                        // Remove the task from the task list
+                        taskList.remove(position);
+                        notifyItemRemoved(position);
+
+                        // Delete the task from the database
+                        Tasks tasksToDelete = new Tasks();
+                        tasksToDelete.setId(task.getId()); // Assuming getId returns the task ID
+                        long id = task.getId();
+//                                Log.d("Database", "Entry::: " + taskList.get(position).getId() + "*********************");
+
+                        databaseHelper.tasksDAO().deleteTaskById(id);
+//                                databaseHelper.tasksDAO().deleteTask(tasksToDelete);
+
+                        notifyItemRangeChanged(position, taskList.size());
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context, "Be Careful !", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        builder.show();
+    }
+
+
 }

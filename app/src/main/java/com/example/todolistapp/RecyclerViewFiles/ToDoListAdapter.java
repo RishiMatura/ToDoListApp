@@ -1,13 +1,16 @@
 package com.example.todolistapp.RecyclerViewFiles;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -57,6 +60,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         databaseHelper = DatabaseHelper.getDB(context);
 
 
+//        The Long Press Functionality of the rowLayout
         holder.rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -73,7 +77,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                         // Check the ID of the clicked menu item and perform the corresponding action
                         if (itemId == R.id.menu_option1) {
                             // Handle menu option 1 click
-                            Toast.makeText(context, "Option 1 clicked", Toast.LENGTH_SHORT).show();
+
+                            editTaskFun(position);
+
+//                            Toast.makeText(context, "Option 1 clicked", Toast.LENGTH_SHORT).show();
                             return true;
                         } else if (itemId == R.id.menu_option2) {
                             // Handle menu option 2 click
@@ -92,8 +99,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 return true;
             }
         });
-
-
 //        holder.rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
 //            @Override
 //            public boolean onLongClick(View v) {
@@ -106,28 +111,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 //                return true;
 //            }
 //        });
-
-    }
-private boolean toBoolean(int n){
-    return (n!=0);
-
-}
-    @Override
-    public int getItemCount() {
-        return taskList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        CheckBox checkBox;
-        RelativeLayout rowLayout;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            checkBox = itemView.findViewById(R.id.todoCheckBox);
-            rowLayout = itemView.findViewById(R.id.row_layout);
-        }
-    }
-//Function to delete task and its reference is used inside the context menu (popup Menu)
+    //Function to delete task and its reference is used inside the context menu (popup Menu)
     public void deleteTaskFun(int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle("Delete Task")
@@ -164,6 +151,84 @@ private boolean toBoolean(int n){
                 });
         builder.show();
     }
+
+
+//    Function to edit the Tasks from the popup menu
+
+    public void editTaskFun(int position){
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.update_task_layout);
+
+        EditText editTask = dialog.findViewById(R.id.dialogBoxEditTask);
+        Button dialogBoxBtnAction = dialog.findViewById(R.id.dialogBoxBtnAction);
+
+//        Setting the text in the editText field from the pre-existing database
+        editTask.setText(taskList.get(position).getTask());
+
+
+        dialogBoxBtnAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String edTaskTxt = editTask.getText().toString();
+
+                taskList.set(position, new ModelClass(edTaskTxt));
+                notifyItemChanged(position);
+
+
+
+                // Delete the task from the database
+                ModelClass task = taskList.get(position);
+                Tasks updateTask = new Tasks();
+
+                updateTask.setId(task.getId()); // setting the id of the obj of the database class (Tasks)
+                // which will be derived from the ModelClass' s obj known as task
+                long id = task.getId();
+
+
+//                updateTask.setTask(task.getTask());                   NOT WORKING CORRECTLY !!!
+                updateTask.setTask(edTaskTxt);
+
+                databaseHelper.tasksDAO().updateTask(updateTask);
+                dialog.dismiss();
+
+
+
+
+            }
+        });
+        dialogBoxBtnAction.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(context, "Click to update Details", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        dialog.show();
+
+    }
+
+
+
+private boolean toBoolean(int n){
+    return (n!=0);
+
+}
+    @Override
+    public int getItemCount() {
+        return taskList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        CheckBox checkBox;
+        RelativeLayout rowLayout;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            checkBox = itemView.findViewById(R.id.todoCheckBox);
+            rowLayout = itemView.findViewById(R.id.row_layout);
+        }
+    }
+
 
 
 }

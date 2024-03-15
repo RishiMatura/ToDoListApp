@@ -5,6 +5,11 @@ import android.widget.EditText;
 public class ModelClass {
     private long id;
     private int status;
+
+    public ModelClass(String task) {
+        this.task = task;
+    }
+
     private String task;
 
     public ModelClass() {

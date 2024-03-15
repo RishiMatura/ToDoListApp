@@ -20,13 +20,6 @@ public interface TasksDAO {
     @Update
     void updateTask(Tasks task);
 
-    @Delete
-    void deleteTask(Tasks task);
-
-    @Query("DELETE FROM Tasks")
-    void deleteAllTasks();
-
-
     @Query("DELETE FROM tasks WHERE id = :id")
     void deleteTaskById(long id);
 }

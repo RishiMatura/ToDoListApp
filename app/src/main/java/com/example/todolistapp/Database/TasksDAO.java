@@ -22,4 +22,7 @@ public interface TasksDAO {
 
     @Query("DELETE FROM tasks WHERE id = :id")
     void deleteTaskById(long id);
+
+    @Query("UPDATE tasks SET tasks = :newTask WHERE id = :taskId")
+    void updateTaskById(long taskId, String newTask);
 }

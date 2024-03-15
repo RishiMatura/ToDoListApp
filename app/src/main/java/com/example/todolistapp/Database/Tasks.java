@@ -14,6 +14,8 @@ public class Tasks  {
 
     @ColumnInfo(name = "Status")
     private int status;
+
+
     public Tasks(String task, int status) {
         this.task = task;
         this.status = status;
@@ -47,5 +49,11 @@ public class Tasks  {
     @Ignore
     public Tasks(){
 
+    }
+    @Ignore
+    public Tasks(long id, String task, int status) {
+        this.id = id;
+        this.task = task;
+        this.status = status;
     }
 }

@@ -170,24 +170,31 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 String edTaskTxt = editTask.getText().toString();
+                int status = taskList.get(position).getStatus();
+                long id = taskList.get(position).getId();
 
                 taskList.set(position, new ModelClass(edTaskTxt));
                 notifyItemChanged(position);
 
 
 
-                // Delete the task from the database
-                ModelClass task = taskList.get(position);
-                Tasks updateTask = new Tasks();
+                // Update the task in the database
+//                ModelClass task = taskList.get(position);
+                Tasks updateTask = new Tasks(id, edTaskTxt, status);
 
-                updateTask.setId(task.getId()); // setting the id of the obj of the database class (Tasks)
+
+//                updateTask.setId(task.getId()); // setting the id of the obj of the database class (Tasks)
                 // which will be derived from the ModelClass' s obj known as task
-                long id = task.getId();
+
+
+
+
 
 
 //                updateTask.setTask(task.getTask());                   NOT WORKING CORRECTLY !!!
-                updateTask.setTask(edTaskTxt);
+//                updateTask.setTask(edTaskTxt);
 
+//                databaseHelper = DatabaseHelper.getDB(context);
                 databaseHelper.tasksDAO().updateTask(updateTask);
                 dialog.dismiss();
 

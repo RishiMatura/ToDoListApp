@@ -173,7 +173,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 int status = taskList.get(position).getStatus();
                 long id = taskList.get(position).getId();
 
-                taskList.set(position, new ModelClass(edTaskTxt));
+                taskList.get(position).setTask(edTaskTxt);
+//                taskList.set(position, new ModelClass(id, edTaskTxt));
                 notifyItemChanged(position);
 
 

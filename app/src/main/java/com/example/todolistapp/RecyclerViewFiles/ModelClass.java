@@ -6,12 +6,13 @@ public class ModelClass {
     private long id;
     private int status;
 
-    public ModelClass(String task) {
-        this.task = task;
-    }
 
     private String task;
 
+    public ModelClass(long id, String task) {
+        this.task = task;
+        this.id = id;
+    }
     public ModelClass() {
     }
 

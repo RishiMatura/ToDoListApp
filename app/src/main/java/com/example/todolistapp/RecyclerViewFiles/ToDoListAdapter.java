@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapp.Database.DatabaseHelper;
@@ -62,42 +63,18 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
 
 //        The Long Press Functionality of the rowLayout
+
         holder.rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-
-                PopupMenu popupMenu = new PopupMenu(context, v, Gravity.END);
-                popupMenu.inflate(R.menu.popup_menu);
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        // Get the ID of the clicked menu item
-                        int itemId = item.getItemId();
-
-                        // Check the ID of the clicked menu item and perform the corresponding action
-                        if (itemId == R.id.menu_option1) {
-                            // Handle menu option 1 click
-
-                            editTaskFun(position);
-
-//                            Toast.makeText(context, "Option 1 clicked", Toast.LENGTH_SHORT).show();
-                            return true;
-                        } else if (itemId == R.id.menu_option2) {
-                            // Handle menu option 2 click
-
-
-                            deleteTaskFun(position);
-                            return true;
-                        }
-
-
-                        return false; // Return false if the clicked item is not handled
-                    }
-                });
-                popupMenu.show();
-
-
+                openContextMenu(v, position);
+                return true;
+            }
+        });
+        holder.checkBox.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                openContextMenu(v, position);
                 return true;
             }
         });
@@ -105,14 +82,45 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 //            @Override
 //            public boolean onLongClick(View v) {
 //
-
-
 //              Used a function to delete the entry and embedded it inside the popup menu
-
-
 //                return true;
 //            }
 //        });
+    }
+//    Function to open a ContextMenu on long Press (TO be Implemented on both  checkBox and the CardLayout)
+    public void openContextMenu(View v, int position){
+
+        PopupMenu popupMenu = new PopupMenu(context, v, Gravity.CENTER, 0, R.style.PopupMenuMoreCentralized)
+                ;
+        popupMenu.inflate(R.menu.popup_menu);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                // Get the ID of the clicked menu item
+                int itemId = item.getItemId();
+
+                // Check the ID of the clicked menu item and perform the corresponding action
+                if (itemId == R.id.EditTaskMenu) {
+                    // Handle menu option 1 click
+
+                    editTaskFun(position);
+
+//                            Toast.makeText(context, "Option 1 clicked", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (itemId == R.id.DeleteTaskMenu) {
+                    // Handle menu option 2 click
+
+
+                    deleteTaskFun(position);
+                    return true;
+                }
+
+
+                return false; // Return false if the clicked item is not handled
+            }
+        });
+        popupMenu.show();
     }
 
 
@@ -180,18 +188,12 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 notifyItemChanged(position);
 
 
-
                 // Update the task in the database
 //                ModelClass task = taskList.get(position);
                 Tasks updateTask = new Tasks(id, edTaskTxt, status);
 
-
 //                updateTask.setId(task.getId()); // setting the id of the obj of the database class (Tasks)
                 // which will be derived from the ModelClass' s obj known as task
-
-
-
-
 
 
 //                updateTask.setTask(task.getTask());                   NOT WORKING CORRECTLY !!!
@@ -200,9 +202,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 //                databaseHelper = DatabaseHelper.getDB(context);
                 databaseHelper.tasksDAO().updateTask(updateTask);
                 dialog.dismiss();
-
-
-
 
             }
         });
@@ -216,8 +215,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         dialog.show();
 
     }
-
-
 
 private boolean toBoolean(int n){
     return (n!=0);
@@ -238,7 +235,4 @@ private boolean toBoolean(int n){
             rowLayout = itemView.findViewById(R.id.row_layout);
         }
     }
-
-
-
 }

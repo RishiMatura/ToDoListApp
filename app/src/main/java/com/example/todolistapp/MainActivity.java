@@ -6,9 +6,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,17 +65,20 @@ RelativeLayout rowLayout;
                 dialog.show(getSupportFragmentManager(), "AddNewTaskDialog");
             }
         });
-Log.d("testingRishi", "before");
-        rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(MainActivity.this, "Finally", Toast.LENGTH_SHORT).show();
-                Log.d("testingRishi", "during");
 
-                return true;
-            }
-        });
-Log.d("testingRishi", "after");
+//Log.d("testingRishi", "before");
+//
+//        rowLayout.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Toast.makeText(MainActivity.this, "Finally", Toast.LENGTH_SHORT).show();
+//                Log.d("testingRishi", "during");
+//
+//                return true;
+//            }
+//        });
+//
+//Log.d("testingRishi", "after");
 
 
     }
@@ -149,6 +152,7 @@ Log.d("testingRishi", "after");
     public void onCheckBoxClick(View view) {
         CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
         checkBox.setChecked(!checkBox.isChecked());
+
 //        taskList.get(view.getId()).setStatus();
 //        databaseHelper.tasksDAO().updateTask(new Tasks());
     }

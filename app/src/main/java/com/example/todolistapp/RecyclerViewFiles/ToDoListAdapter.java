@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +66,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             @Override
             public boolean onLongClick(View v) {
 
-                PopupMenu popupMenu = new PopupMenu(context, v);
+                PopupMenu popupMenu = new PopupMenu(context, v, Gravity.END);
                 popupMenu.inflate(R.menu.popup_menu);
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -95,6 +96,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                     }
                 });
                 popupMenu.show();
+
 
                 return true;
             }

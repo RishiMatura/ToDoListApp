@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -166,7 +167,19 @@ RelativeLayout rowLayout;
         Log.d("Data", "Entry::: " + model.getId() + "*********************");
 
     }
-
-
+//    public void showCategorySelectionFragment() {
+//        CategorySelectionFragment fragment = new CategorySelectionFragment();
+//        fragment.setOnCategorySelectedListener(new CategorySelectionFragment.OnCategorySelectedListener() {
+//            @Override
+//            public void onCategorySelected(String category) {
+//                // Handle the selected category
+//                // For example, update the UI to display the selected category
+//            }
+//        });
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(android.R.id.content, fragment)
+//                .addToBackStack(null)
+//                .commit();
+//    }
 
 }

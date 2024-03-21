@@ -6,5 +6,8 @@
     <item
         android:id="@+id/DeleteTaskMenu"
         android:title="@string/delete_task" />
+    <item
+        android:id="@+id/CategoryTaskMenu"
+        android:title="@string/category" />
     <!-- Add more items if needed -->
 </menu>

@@ -16,8 +16,6 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapp.Database.DatabaseHelper;
@@ -45,16 +43,15 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         this.taskList = todoList;
     }
 
-    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.task_layout, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 //        holder.checkBox.setImageResource(todoList.get(position));
         final ModelClass item = taskList.get(position);
         holder.checkBox.setText(item.getTask());
@@ -87,7 +84,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 //            }
 //        });
     }
-//    Function to open a ContextMenu on long Press (TO be Implemented on both  checkBox and the CardLayout)
+    //    Function to open a ContextMenu on long Press (TO be Implemented on both  checkBox and the CardLayout)
     public void openContextMenu(View v, int position){
 
         PopupMenu popupMenu = new PopupMenu(context, v, Gravity.CENTER, 0, R.style.PopupMenuMoreCentralized)
@@ -114,6 +111,23 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
                     deleteTaskFun(position);
                     return true;
+                } else if (itemId == R.id.CategoryTaskMenu) {
+//                  Handling event when show category is implemented
+//                    ((MainActivity) context).showCategorySelectionFragment();
+
+                    String[] categories = {"Food", "Groceries", "Work", "Personal", "Health"};
+                    CategoryDialog.showCategoryDialog(context, categories, new CategoryDialog.OnCategorySelectedListener() {
+                        @Override
+                        public void onCategorySelected(String category) {
+                            // Handle the selected category here
+                            Tasks task = new Tasks();
+//                            ModelClass task = taskList.get(position);
+                            // For example, update the task with the selected category
+                            task.setCategories(category);
+                            notifyDataSetChanged(); // Notify adapter to reflect changes
+                        }
+                    });
+
                 }
 
 
@@ -216,10 +230,12 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
     }
 
-private boolean toBoolean(int n){
-    return (n!=0);
 
-}
+
+    private boolean toBoolean(int n){
+        return (n!=0);
+
+    }
     @Override
     public int getItemCount() {
         return taskList.size();
@@ -229,7 +245,7 @@ private boolean toBoolean(int n){
 
         CheckBox checkBox;
         RelativeLayout rowLayout;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.todoCheckBox);
             rowLayout = itemView.findViewById(R.id.row_layout);

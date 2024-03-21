@@ -14,7 +14,17 @@ public class Tasks  {
 
     @ColumnInfo(name = "Status")
     private int status;
+//
+    @ColumnInfo(name = "Categories")
+    private String categories;
 
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
 
     public Tasks(String task, int status) {
         this.task = task;

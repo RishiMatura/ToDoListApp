@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 public class CategoryDialog {
-    private String[] categories = {"Food", "Groceries", "Work", "Personal", "Health"};
+//    private String[] categories = {"Food", "Groceries", "Work", "Personal", "Health"};
 
     public interface OnCategorySelectedListener {
         void onCategorySelected(String category);

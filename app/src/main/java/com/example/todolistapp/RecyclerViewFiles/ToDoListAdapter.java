@@ -115,7 +115,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 //                  Handling event when show category is implemented
 //                    ((MainActivity) context).showCategorySelectionFragment();
 
-                    String[] categories = {"Food", "Groceries", "Work", "Personal", "Health"};
+                    String[] categories = {"Food", "Shopping", "Work", "Personal", "Health"};
                     CategoryDialog.showCategoryDialog(context, categories, new CategoryDialog.OnCategorySelectedListener() {
                         @Override
                         public void onCategorySelected(String category) {

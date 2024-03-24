@@ -14,7 +14,9 @@ public class Tasks  {
 
     @ColumnInfo(name = "Status")
     private int status;
-//
+
+
+    //
     @ColumnInfo(name = "Categories")
     private String categories;
 
@@ -60,10 +62,25 @@ public class Tasks  {
     public Tasks(){
 
     }
+
+//    Constructor for category and Id
+    @Ignore
+    public Tasks(long id, String task, String categories) {
+        this.id = id;
+        this.task = task;
+        this.categories = categories;
+    }
     @Ignore
     public Tasks(long id, String task, int status) {
         this.id = id;
         this.task = task;
         this.status = status;
+    }
+    @Ignore
+    public Tasks(long id, String task, int status, String categories) {
+        this.id = id;
+        this.task = task;
+        this.status = status;
+        this.categories = categories;
     }
 }

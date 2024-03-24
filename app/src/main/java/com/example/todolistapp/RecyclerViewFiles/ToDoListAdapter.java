@@ -1,5 +1,6 @@
 package com.example.todolistapp.RecyclerViewFiles;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -51,7 +52,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 //        holder.checkBox.setImageResource(todoList.get(position));
         final ModelClass item = taskList.get(position);
         holder.checkBox.setText(item.getTask());
@@ -87,8 +88,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     //    Function to open a ContextMenu on long Press (TO be Implemented on both  checkBox and the CardLayout)
     public void openContextMenu(View v, int position){
 
-        PopupMenu popupMenu = new PopupMenu(context, v, Gravity.CENTER, 0, R.style.PopupMenuMoreCentralized)
-                ;
+        PopupMenu popupMenu = new PopupMenu(context, v, Gravity.CENTER, 0, R.style.PopupMenuMoreCentralized);
         popupMenu.inflate(R.menu.popup_menu);
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -119,12 +119,27 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                     CategoryDialog.showCategoryDialog(context, categories, new CategoryDialog.OnCategorySelectedListener() {
                         @Override
                         public void onCategorySelected(String category) {
+                            long id = taskList.get(position).getId();
+                            String tasktxt = taskList.get(position).getTask();
+
+                            Tasks updatedCategoryTask = new Tasks(id, tasktxt, category);
+                            databaseHelper.tasksDAO().updateTask(updatedCategoryTask);
+//
+//
+//
+//                            get category
+
                             // Handle the selected category here
-                            Tasks task = new Tasks();
+
+
 //                            ModelClass task = taskList.get(position);
                             // For example, update the task with the selected category
-                            task.setCategories(category);
+//                            task.setCategories(category);
                             notifyDataSetChanged(); // Notify adapter to reflect changes
+
+
+//                            Tasks updateTask = new Tasks(id, edTaskTxt, status);
+
                         }
                     });
 
@@ -196,6 +211,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 String edTaskTxt = editTask.getText().toString();
                 int status = taskList.get(position).getStatus();
                 long id = taskList.get(position).getId();
+                String categories = taskList.get(position).getCategories();
 
                 taskList.get(position).setTask(edTaskTxt);
 //                taskList.set(position, new ModelClass(id, edTaskTxt));
@@ -204,7 +220,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
                 // Update the task in the database
 //                ModelClass task = taskList.get(position);
-                Tasks updateTask = new Tasks(id, edTaskTxt, status);
+                Tasks updateTask = new Tasks(id, edTaskTxt, status, categories);
 
 //                updateTask.setId(task.getId()); // setting the id of the obj of the database class (Tasks)
                 // which will be derived from the ModelClass' s obj known as task

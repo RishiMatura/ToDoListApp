@@ -1,11 +1,21 @@
 package com.example.todolistapp.RecyclerViewFiles;
 
-import android.widget.EditText;
-
 public class ModelClass {
     private long id;
     private int status;
+    private String categories;
 
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
+    public ModelClass(String categories) {
+        this.categories = categories;
+    }
 
     private String task;
 

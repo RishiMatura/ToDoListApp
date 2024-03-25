@@ -1,4 +1,4 @@
-package com.example.todolistapp.RecyclerViewFiles;
+package com.example.todolistapp;
 
 import android.app.AlertDialog;
 import android.content.Context;

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.todolistapp.CategoryDialog;
 import com.example.todolistapp.Database.DatabaseHelper;
 import com.example.todolistapp.Database.Tasks;
 import com.example.todolistapp.R;
@@ -99,50 +100,19 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
                 // Check the ID of the clicked menu item and perform the corresponding action
                 if (itemId == R.id.EditTaskMenu) {
-                    // Handle menu option 1 click
-
+//                  Handle menu option 1 click
                     editTaskFun(position);
-
-//                            Toast.makeText(context, "Option 1 clicked", Toast.LENGTH_SHORT).show();
                     return true;
+
                 } else if (itemId == R.id.DeleteTaskMenu) {
-                    // Handle menu option 2 click
-
-
+//                  Handle menu option 2 click
                     deleteTaskFun(position);
                     return true;
+
                 } else if (itemId == R.id.CategoryTaskMenu) {
 //                  Handling event when show category is implemented
-//                    ((MainActivity) context).showCategorySelectionFragment();
-
-                    String[] categories = {"Food", "Shopping", "Work", "Personal", "Health"};
-                    CategoryDialog.showCategoryDialog(context, categories, new CategoryDialog.OnCategorySelectedListener() {
-                        @Override
-                        public void onCategorySelected(String category) {
-                            long id = taskList.get(position).getId();
-                            String tasktxt = taskList.get(position).getTask();
-
-                            Tasks updatedCategoryTask = new Tasks(id, tasktxt, category);
-                            databaseHelper.tasksDAO().updateTask(updatedCategoryTask);
-//
-//
-//
-//                            get category
-
-                            // Handle the selected category here
-
-
-//                            ModelClass task = taskList.get(position);
-                            // For example, update the task with the selected category
-//                            task.setCategories(category);
-                            notifyDataSetChanged(); // Notify adapter to reflect changes
-
-
-//                            Tasks updateTask = new Tasks(id, edTaskTxt, status);
-
-                        }
-                    });
-
+                    selectCategory(position);
+                    return true;
                 }
 
 
@@ -151,8 +121,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         });
         popupMenu.show();
     }
-
-
+    
     //Function to delete task and its reference is used inside the context menu (popup Menu)
     public void deleteTaskFun(int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
@@ -190,10 +159,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 });
         builder.show();
     }
-
-
 //    Function to edit the Tasks from the popup menu
-
     public void editTaskFun(int position){
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.update_task_layout);
@@ -244,6 +210,22 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         });
         dialog.show();
 
+    }
+//    Function to Select Category from the context menu
+    public void selectCategory(int position){
+        String[] categories = {"Food", "Shopping", "Work", "Personal", "Health"};
+        CategoryDialog.showCategoryDialog(context, categories, new CategoryDialog.OnCategorySelectedListener() {
+            @Override
+            public void onCategorySelected(String category) {
+                long id = taskList.get(position).getId();
+                String tasktxt = taskList.get(position).getTask();
+                taskList.get(position).setCategories(category);
+
+                Tasks updatedCategoryTask = new Tasks(id, tasktxt, category);
+                databaseHelper.tasksDAO().updateTask(updatedCategoryTask);
+                notifyDataSetChanged(); // Notify adapter to reflect changes
+            }
+        });
     }
 
 

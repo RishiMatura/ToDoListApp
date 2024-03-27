@@ -31,6 +31,9 @@ public interface TasksDAO {
 
 //    @Query("SELECT * FROM Tasks WHERE id = :id")
 //    Tasks getTaskById(long id);
+    @Query("UPDATE tasks SET status = :newStatus WHERE id = :taskId")
+    void updateStatus(long taskId, int newStatus);
+
 
 
 }

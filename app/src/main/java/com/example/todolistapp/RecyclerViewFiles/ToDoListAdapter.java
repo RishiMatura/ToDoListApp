@@ -159,6 +159,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 });
         builder.show();
     }
+
+
 //    Function to edit the Tasks from the popup menu
     public void editTaskFun(int position){
         Dialog dialog = new Dialog(context);
@@ -167,7 +169,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         EditText editTask = dialog.findViewById(R.id.dialogBoxEditTask);
         Button dialogBoxBtnAction = dialog.findViewById(R.id.dialogBoxBtnAction);
 
-//        Setting the text in the editText field from the pre-existing database
+//        Setting the text in the editText field from the pre-existing recyclerView
         editTask.setText(taskList.get(position).getTask());
 
 
@@ -219,16 +221,20 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             public void onCategorySelected(String category) {
                 long id = taskList.get(position).getId();
                 String tasktxt = taskList.get(position).getTask();
-                taskList.get(position).setCategories(category);
 
-                Tasks updatedCategoryTask = new Tasks(id, tasktxt, category);
-                databaseHelper.tasksDAO().updateTask(updatedCategoryTask);
-                notifyDataSetChanged(); // Notify adapter to reflect changes
+//                Separate DAO Query for Updating Categories
+                databaseHelper.tasksDAO().updateCategory(id, category);
+//                notifyDataSetChanged();         //Absolutely Not Recommended to use this function
+//                No need to create a separate obj of Tasks
+//                Tasks updateCategory = new Tasks();
+//                updateCategory.setId(id);
+//                updateCategory.setCategories(category);
+
+//                databaseHelper.tasksDAO().updateCategory(id, category);
+//                notifyDataSetChanged(); // Notify adapter to reflect changes
             }
         });
     }
-
-
 
     private boolean toBoolean(int n){
         return (n!=0);

@@ -176,29 +176,15 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         dialogBoxBtnAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String edTaskTxt = editTask.getText().toString();
-                int status = taskList.get(position).getStatus();
                 long id = taskList.get(position).getId();
-                String categories = taskList.get(position).getCategories();
-
+                String edTaskTxt = editTask.getText().toString();
+//                Updating the Database
                 taskList.get(position).setTask(edTaskTxt);
-//                taskList.set(position, new ModelClass(id, edTaskTxt));
+
+//                Updating the RecyclerView
                 notifyItemChanged(position);
+                databaseHelper.tasksDAO().updateTaskString(id, edTaskTxt);
 
-
-                // Update the task in the database
-//                ModelClass task = taskList.get(position);
-                Tasks updateTask = new Tasks(id, edTaskTxt, status, categories);
-
-//                updateTask.setId(task.getId()); // setting the id of the obj of the database class (Tasks)
-                // which will be derived from the ModelClass' s obj known as task
-
-
-//                updateTask.setTask(task.getTask());                   NOT WORKING CORRECTLY !!!
-//                updateTask.setTask(edTaskTxt);
-
-//                databaseHelper = DatabaseHelper.getDB(context);
-                databaseHelper.tasksDAO().updateTask(updateTask);
                 dialog.dismiss();
 
             }

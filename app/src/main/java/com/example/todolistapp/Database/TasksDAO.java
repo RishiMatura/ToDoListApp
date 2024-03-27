@@ -24,5 +24,13 @@ public interface TasksDAO {
     void deleteTaskById(long id);
 
     @Query("UPDATE tasks SET tasks = :newTask WHERE id = :taskId")
-    void updateTaskById(long taskId, String newTask);
+    void updateTaskString( long taskId, String newTask);
+
+    @Query("UPDATE tasks SET categories = :newCategory WHERE id = :taskId")
+    void updateCategory(long taskId, String newCategory);
+
+//    @Query("SELECT * FROM Tasks WHERE id = :id")
+//    Tasks getTaskById(long id);
+
+
 }

@@ -159,6 +159,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 });
         builder.show();
     }
+
+
 //    Function to edit the Tasks from the popup menu
     public void editTaskFun(int position){
         Dialog dialog = new Dialog(context);
@@ -167,36 +169,22 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         EditText editTask = dialog.findViewById(R.id.dialogBoxEditTask);
         Button dialogBoxBtnAction = dialog.findViewById(R.id.dialogBoxBtnAction);
 
-//        Setting the text in the editText field from the pre-existing database
+//        Setting the text in the editText field from the pre-existing recyclerView
         editTask.setText(taskList.get(position).getTask());
 
 
         dialogBoxBtnAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String edTaskTxt = editTask.getText().toString();
-                int status = taskList.get(position).getStatus();
                 long id = taskList.get(position).getId();
-                String categories = taskList.get(position).getCategories();
-
+                String edTaskTxt = editTask.getText().toString();
+//                Updating the Database
                 taskList.get(position).setTask(edTaskTxt);
-//                taskList.set(position, new ModelClass(id, edTaskTxt));
+
+//                Updating the RecyclerView
                 notifyItemChanged(position);
+                databaseHelper.tasksDAO().updateTaskString(id, edTaskTxt);
 
-
-                // Update the task in the database
-//                ModelClass task = taskList.get(position);
-                Tasks updateTask = new Tasks(id, edTaskTxt, status, categories);
-
-//                updateTask.setId(task.getId()); // setting the id of the obj of the database class (Tasks)
-                // which will be derived from the ModelClass' s obj known as task
-
-
-//                updateTask.setTask(task.getTask());                   NOT WORKING CORRECTLY !!!
-//                updateTask.setTask(edTaskTxt);
-
-//                databaseHelper = DatabaseHelper.getDB(context);
-                databaseHelper.tasksDAO().updateTask(updateTask);
                 dialog.dismiss();
 
             }
@@ -219,16 +207,20 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             public void onCategorySelected(String category) {
                 long id = taskList.get(position).getId();
                 String tasktxt = taskList.get(position).getTask();
-                taskList.get(position).setCategories(category);
 
-                Tasks updatedCategoryTask = new Tasks(id, tasktxt, category);
-                databaseHelper.tasksDAO().updateTask(updatedCategoryTask);
-                notifyDataSetChanged(); // Notify adapter to reflect changes
+//                Separate DAO Query for Updating Categories
+                databaseHelper.tasksDAO().updateCategory(id, category);
+//                notifyDataSetChanged();         //Absolutely Not Recommended to use this function
+//                No need to create a separate obj of Tasks
+//                Tasks updateCategory = new Tasks();
+//                updateCategory.setId(id);
+//                updateCategory.setCategories(category);
+
+//                databaseHelper.tasksDAO().updateCategory(id, category);
+//                notifyDataSetChanged(); // Notify adapter to reflect changes
             }
         });
     }
-
-
 
     private boolean toBoolean(int n){
         return (n!=0);

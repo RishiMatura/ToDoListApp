@@ -18,6 +18,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.todolistapp.CategoryDialog;
@@ -52,6 +53,24 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position, List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            // If no payload, bind the entire view
+            onBindViewHolder(holder, position);
+        } else {
+            // If payload exists, update only the specific views affected by the payload
+            for (Object payload : payloads) {
+                if (payload instanceof TaskPayload) {
+                    String taskText = ((TaskPayload) payload).getTaskText();
+                    holder.checkBox.setText(taskText);
+                }
+                // Add more payload handling if needed
+            }
+        }
+    }
+
+
 
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -202,7 +221,9 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
                 taskList.get(position).setTask(edTaskTxt);
 
 //                Updating the RecyclerView
-                notifyItemChanged(position);
+//                notifyItemChanged(position);
+                notifyItemChanged(position, new TaskPayload(edTaskTxt));
+
                 databaseHelper.tasksDAO().updateTaskString(id, edTaskTxt);
 
                 dialog.dismiss();
@@ -263,3 +284,15 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         }
     }
 }
+ class TaskPayload {
+    private String taskText;
+
+    public TaskPayload(String taskText) {
+        this.taskText = taskText;
+    }
+
+    public String getTaskText() {
+        return taskText;
+    }
+}
+

@@ -150,13 +150,7 @@ RelativeLayout rowLayout;
 //    }
 
 
-    public void onCheckBoxClick(View view) {
-        CheckBox checkBox = view.findViewById(R.id.todoCheckBox);
-        checkBox.setChecked(!checkBox.isChecked());
 
-//        taskList.get(view.getId()).setStatus();
-//        databaseHelper.tasksDAO().updateTask(new Tasks());
-    }
 
     public void appendToList(String taskText, long autoGenId) {
         ModelClass model = new ModelClass();

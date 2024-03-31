@@ -21,7 +21,7 @@
         android:clickable="true"
         android:focusable="true"
         android:background="?android:attr/selectableItemBackground"
-        android:onClick="onCheckBoxClick">
+        >
 
         <CheckBox
             android:id="@+id/todoCheckBox"

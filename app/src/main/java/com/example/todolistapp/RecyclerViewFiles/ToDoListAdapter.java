@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
@@ -79,25 +78,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         holder.checkBox.setText(item.getTask());
         holder.checkBox.setChecked(toBoolean(item.getStatus()));
         databaseHelper = DatabaseHelper.getDB(context);
+        holder.checkBox.setFocusable(false);
 
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                long id = taskList.get(position).getId();
-
-                Tasks currentTask = new Tasks();
-                currentTask.setId(id);
-//                currentTask.setStatus(item.getStatus());
-
-                // Update the status of the current task
-                currentTask.setStatus(isChecked ? 1:0);
-                int status = currentTask.getStatus();
-//                currentTask.setStatus(isChecked ? 1 : 0); // Assuming 1 means completed and 0 means incomplete
-
-                // Update the task in the database
-                databaseHelper.tasksDAO().updateStatus(id, status);
-            }
-        });
+        holder.rowLayout.setOnClickListener(getClickListener(holder, position));
+        holder.checkBox.setOnClickListener(getClickListener(holder, position));
 
 
 //        The Long Press Functionality of the rowLayout
@@ -125,6 +109,36 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 //            }
 //        });
     }
+
+    @NonNull
+    private View.OnClickListener getClickListener(ViewHolder holder, int position) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Ahh clicked!");
+                boolean isChecked = holder.checkBox.isChecked();
+                if (!(v instanceof CheckBox)) {
+                    isChecked = !isChecked;
+                    holder.checkBox.setChecked(isChecked);
+                }
+                taskList.get(position).setStatus(isChecked ? 1 : 0);
+                long id = taskList.get(position).getId();
+
+                Tasks currentTask = new Tasks();
+                currentTask.setId(id);
+//                currentTask.setStatus(item.getStatus());
+
+                // Update the status of the current task
+                currentTask.setStatus(isChecked ? 1 : 0);
+                int status = currentTask.getStatus();
+//                currentTask.setStatus(isChecked ? 1 : 0); // Assuming 1 means completed and 0 means incomplete
+
+                // Update the task in the database
+                databaseHelper.tasksDAO().updateStatus(id, status);
+            }
+        };
+    }
+
     //    Function to open a ContextMenu on long Press (TO be Implemented on both  checkBox and the CardLayout)
     public void openContextMenu(View v, int position){
 

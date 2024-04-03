@@ -24,12 +24,7 @@ The ToDo List App is a simple yet powerful task management tool designed to help
 
 ## Screenshots
 ![image](https://github.com/RishiMatura/ToDoListApp/assets/116113786/bcdd688b-7922-4874-bc19-50511aa93748)
-![image](https://github.com/RishiMatura/ToDoListApp/assets/116113786/d329bbbe-521e-46b1-bb4f-b94837d8b94a)
 ![image](https://github.com/RishiMatura/ToDoListApp/assets/116113786/02914119-e632-441b-bc15-ef5902e57a15)
-![image](https://github.com/RishiMatura/ToDoListApp/assets/116113786/576b7db3-4778-466d-b2d7-1f768b3f25fb)
-
-
-
 
 
 ## Installation

@@ -116,7 +116,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Ahh clicked!");
                 boolean isChecked = holder.checkBox.isChecked();
                 if (!(v instanceof CheckBox)) {
                     isChecked = !isChecked;

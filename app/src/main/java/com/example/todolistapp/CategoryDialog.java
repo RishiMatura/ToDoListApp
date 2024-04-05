@@ -17,7 +17,7 @@ public class CategoryDialog {
     }
 
     public static void showCategoryDialog(Context context, String[] categories, final OnCategorySelectedListener listener) {
-//        String[] categories = {"Food", "Shopping", "Work", "Personal", "Health"};
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_category_selection, null);
@@ -46,11 +46,10 @@ public class CategoryDialog {
                     }
                 })
                 .setNegativeButton("Cancel", null);
-        builder.show();
 
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
 //        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //        builder.setTitle("Select Category")
 //                .setItems(categories, new DialogInterface.OnClickListener() {

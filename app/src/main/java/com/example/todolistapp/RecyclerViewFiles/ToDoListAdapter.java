@@ -25,6 +25,7 @@ import com.example.todolistapp.Database.DatabaseHelper;
 import com.example.todolistapp.Database.Tasks;
 import com.example.todolistapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHolder> {
@@ -115,7 +116,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Ahh clicked!");
                 boolean isChecked = holder.checkBox.isChecked();
                 if (!(v instanceof CheckBox)) {
                     isChecked = !isChecked;
@@ -257,8 +257,14 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
 //    Function to Select Category from the context menu
     public void selectCategory(int position){
-        String[] categories = {"Food", "Shopping", "Work", "Personal", "Health"};
-        CategoryDialog.showCategoryDialog(context, categories, new CategoryDialog.OnCategorySelectedListener() {
+//        String[] categories = {"Food", "Shopping", "Work", "Personal", "Health"};
+        ArrayList<String> categoriesList = new ArrayList<String>();
+        categoriesList.add("Food");
+        categoriesList.add("Shopping");
+        categoriesList.add("Work");
+        categoriesList.add("Personal");
+        categoriesList.add("Health");
+        CategoryDialog.showCategoryDialog(context, categoriesList, taskList, position, new CategoryDialog.OnCategorySelectedListener() {
             @Override
             public void onCategorySelected(String category) {
                 long id = taskList.get(position).getId();

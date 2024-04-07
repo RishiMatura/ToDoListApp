@@ -60,5 +60,18 @@
         app:layout_constraintVertical_bias="0.976"
         tools:ignore="HardcodedText" />
 
+    <ImageButton
+        android:id="@+id/filter_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:background="@color/white"
+        android:importantForAccessibility="no"
+        android:scaleType="fitEnd"
+        android:src="@mipmap/filter_icon"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20sp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

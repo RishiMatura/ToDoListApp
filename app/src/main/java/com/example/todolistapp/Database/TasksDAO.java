@@ -33,6 +33,8 @@ public interface TasksDAO {
     @Query("UPDATE tasks SET status = :newStatus WHERE id = :taskId")
     void updateStatus(long taskId, int newStatus);
 
+    @Query("SELECT * FROM tasks WHERE categories = :category")
+    List<Tasks> getTasksByCategory(String category);
 
 
 }

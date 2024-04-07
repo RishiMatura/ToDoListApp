@@ -25,7 +25,7 @@ public class CategoryDialog {
         void onCategorySelected(String category);
     }
 
-    public static void showCategoryDialog(Context context, ArrayList<String> categories, List<ModelClass> taskList, int position, final OnCategorySelectedListener listener) {
+    public static void showCategoryDialog(Context context, ArrayList<String> categories, List<ModelClass> taskList, int position,String currentCategory, final OnCategorySelectedListener listener) {
 //        String[] categories = {"Food", "Shopping", "Work", "Personal", "Health"};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -114,5 +114,13 @@ public class CategoryDialog {
 //                });
 //        AlertDialog dialog = builder.create();
 //        dialog.show();
+
+        // Pre-select the current category, if it exists
+        int selectedPosition = categories.indexOf(currentCategory);
+        if (selectedPosition >= 0) {
+            RadioButton selectedRadioButton = (RadioButton) radioGroup.getChildAt(selectedPosition);
+            selectedRadioButton.setChecked(true);
+        }
+
     }
 }

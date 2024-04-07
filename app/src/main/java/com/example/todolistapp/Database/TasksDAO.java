@@ -36,5 +36,7 @@ public interface TasksDAO {
     @Query("SELECT * FROM tasks WHERE categories = :category")
     List<Tasks> getTasksByCategory(String category);
 
+    @Query("SELECT * FROM tasks WHERE id = :taskId")
+    Tasks getTaskById(long taskId);
 
 }

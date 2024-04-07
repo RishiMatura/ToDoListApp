@@ -3,13 +3,13 @@ package com.example.todolistapp;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private List <ModelClass> taskList = new ArrayList<>();   // to be used for RecyclerView
     private FloatingActionButton fab;
     private DatabaseHelper databaseHelper; // Database helper instance
+    private ImageButton filterButton;
 
 //    RelativeLayout rowLayout;
 RelativeLayout rowLayout;
@@ -54,7 +55,13 @@ RelativeLayout rowLayout;
         loadTasks();
 
 
-
+        filterButton = findViewById(R.id.filter_Button);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopUp(v);
+            }
+        });
 
 
         // Set a click listener for the FAB button
@@ -66,6 +73,7 @@ RelativeLayout rowLayout;
                 dialog.show(getSupportFragmentManager(), "AddNewTaskDialog");
             }
         });
+
 
 //Log.d("testingRishi", "before");
 //
@@ -83,8 +91,86 @@ RelativeLayout rowLayout;
 
 
     }
+    public void showPopUp(View v) {
 
-/*
+        PopupMenu popup = new PopupMenu(this, v);
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.menu_all) {
+                    // Show all tasks
+                    loadTasks();
+//                    List<Tasks> allTasks = databaseHelper.tasksDAO().getAllTasks();
+
+                    return true;
+                } else if (id == R.id.menu_food) {
+                    // Show tasks of Food
+                    loadTasksByCategory("Food");
+                    return true;
+                } else if (id == R.id.filter_shopping) {
+                    // Show tasks of Shopping
+                    loadTasksByCategory("Shopping");
+                    return true;
+                } else if (id == R.id.filter_work) {
+                    // Show tasks of Work
+                    loadTasksByCategory("Work");
+                    return true;
+                } else if (id == R.id.filter_personal) {
+                    // Show tasks of Personal
+                    loadTasksByCategory("Personal");
+                    return true;
+                } else if (id == R.id.filter_health) {
+                    // Show tasks of Health
+                    loadTasksByCategory("Health");
+                    return true;
+                }
+                // If the selected item doesn't match any case, let the superclass handle it
+                        return false;
+                    }
+                });
+                popup.inflate(R.menu.filter_by_category);
+                popup.show();
+        }
+    private void loadTasksByCategory(String category) {
+        List<Tasks> filteredTasks = databaseHelper.tasksDAO().getTasksByCategory(category);
+        updateRecyclerView(filteredTasks);
+    }
+public void updateRecyclerView(List<Tasks> filteredTasks){
+    taskList.clear();
+    for (Tasks task : filteredTasks) {
+        ModelClass model = new ModelClass();
+        model.setTask(task.getTask());
+        model.setId(task.getId());
+        model.setStatus(task.getStatus());
+        taskList.add(model);
+    }
+    adapter.notifyDataSetChanged();
+
+
+}
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.menu_all) {
+//            // Show all tasks
+//            Toast.makeText(this, "Option1", Toast.LENGTH_SHORT).show();
+//            return true;
+//        } else if (id == R.id.menu_food) {
+//            // Show tasks of category 1
+//            Toast.makeText(this, "Option2", Toast.LENGTH_SHORT).show();
+//            return true;
+//        } else if (id == R.id.menu_shopping) {
+//            // Show tasks of category 2
+//            Toast.makeText(this, "Option3", Toast.LENGTH_SHORT).show();
+//            return true;
+//        }
+//        // If the selected item doesn't match any case, let the superclass handle it
+//        return super.onOptionsItemSelected(item);
+//    }
+
+    /*
     Whats happening in this loadTask() function --
 
     This function's sole purpose is to propagate the recyclerView with the full database for the first time

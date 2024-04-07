@@ -17,5 +17,11 @@
     </style>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shopping">Shopping</string>
+    <string name="work">Work</string>
+    <string name="personal">Personal</string>
+    <string name="health">Health</string>
+    <string name="food">Food</string>
+    <string name="all">All</string>
 
 </resources>

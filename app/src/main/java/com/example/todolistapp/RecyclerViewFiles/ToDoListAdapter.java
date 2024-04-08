@@ -264,7 +264,17 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         categoriesList.add("Work");
         categoriesList.add("Personal");
         categoriesList.add("Health");
-        CategoryDialog.showCategoryDialog(context, categoriesList, taskList, position, new CategoryDialog.OnCategorySelectedListener() {
+        long id = taskList.get(position).getId();
+
+        Tasks task = databaseHelper.tasksDAO().getTaskById(id); // Replace taskId with the ID of the task
+        String currentCategory = task.getCategories();
+
+//        This method is not working
+//        String currentCategory = taskList.get(position).getCategories();
+
+
+//        String currentCategory = taskList.get(position).getCategories();
+        CategoryDialog.showCategoryDialog(context, categoriesList, taskList, position, currentCategory, new CategoryDialog.OnCategorySelectedListener() {
             @Override
             public void onCategorySelected(String category) {
                 long id = taskList.get(position).getId();

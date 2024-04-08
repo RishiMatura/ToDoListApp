@@ -5,13 +5,12 @@ public class ModelClass {
     private int status;
     private String categories;
 
-    public String getCategories() {
-        return categories;
-    }
-
-    public void setCategories(String categories) {
+    public ModelClass(long id, String task, String categories) {
+        this.id = id;
+        this.task = task;
         this.categories = categories;
     }
+
 
     public ModelClass(String categories) {
         this.categories = categories;
@@ -49,4 +48,11 @@ public class ModelClass {
     public void setTask(String task) {
         this.task = task;
     }
+    public String getCategories() {
+        return categories;
+    }
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
 }

@@ -19,11 +19,21 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AddNewTaskDialog extends BottomSheetDialogFragment {
 
+//    FragmentManager fm = getChildFragmentManager();
+//    RecyclerViewFragment fragm = (RecyclerViewFragment) fm.findFragmentById(R.id.fragmentRecyclerView);
+
     public static final String TAG = "ActionBottomDialog";
     private EditText newTaskText;
     private Button newTaskSaveButton;
     private DatabaseHelper databaseHelper; // Database helper instance
     private Context context;
+
+    private TaskDialogListener listener;
+
+    public AddNewTaskDialog(TaskDialogListener listener) {
+        this.listener = listener;
+    }
+
 
     public AddNewTaskDialog(Context context) {
         this.context = context;
@@ -46,21 +56,19 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 String taskText = newTaskText.getText().toString();
                 if (!taskText.isEmpty()) {
-                    // Insert task into the database
                     long genid = databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 0));
-
                     dismiss();
-//                    ((MainActivity) context).loadTasks();
+//                    fragm.appendToList(taskText, genid);
 
-                    ((MainActivity) context).appendToList(taskText, genid);
-
-                } else {
+                    if (listener != null) {
+                        listener.onTaskAdded(taskText, genid);
+                    }
+                }
+                 else {
                     Toast.makeText(getContext(), "Empty Task", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
         return view;
     }
 }

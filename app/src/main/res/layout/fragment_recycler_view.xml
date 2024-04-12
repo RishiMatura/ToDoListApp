@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragmentRecyclerView"
-    android:background="@color/white"
-    tools:context=".MainActivity">
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/tasksText"

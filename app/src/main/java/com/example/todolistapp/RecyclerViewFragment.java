@@ -25,10 +25,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecyclerViewFragment extends Fragment implements TaskDialogListener {
+public class RecyclerViewFragment extends Fragment{
     private RecyclerView recyclerView;
     private ToDoListAdapter adapter;
-    private List<ModelClass> taskList = new ArrayList<>();   // to be used for RecyclerView
+    public  List<ModelClass> taskList = new ArrayList<>();   // to be used for RecyclerView
     private FloatingActionButton fab;
     private DatabaseHelper databaseHelper; // Database helper instance
     private ImageButton filterButton;
@@ -188,10 +188,7 @@ public class RecyclerViewFragment extends Fragment implements TaskDialogListener
     }
 
     @Override
-    public void onTaskAdded(String taskText, long generatedId) {
-
-
-        appendToList(taskText, generatedId);
-    adapter.notifyItemInserted(taskList.size()-1);
+    public void onResume() {
+        super.onResume();
     }
 }

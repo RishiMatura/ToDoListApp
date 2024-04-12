@@ -2,6 +2,7 @@
 package com.example.todolistapp;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -30,16 +31,41 @@ public class MainActivity extends AppCompatActivity implements TaskDialogListene
                 tab.setText("TBD");
             }
         }).attach();
+
     }
 
 
     @Override
     public void onTaskAdded(String taskText, long generatedId) {
+
+
         // Handle task addition in the activity (optional)
         // You can forward the information to the fragment here
         RecyclerViewFragment fragment = (RecyclerViewFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentRecyclerView);
         if (fragment != null) {
-            fragment.onTaskAdded(taskText, generatedId);
+            Log.d("rishiok", "****************before ");
+            fragment.appendToList(taskText, generatedId);
+            Log.d("rishiok", "****************after ");
+
         }
+        else {
+            Log.d("rishiok", "**************ELSE");
+        }
+    }
+
+    public void add(String taskText, long autoGenId){
+
+        RecyclerViewFragment fragment = (RecyclerViewFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentRecyclerView);
+        if (fragment !=null){
+            fragment.appendToList(taskText, autoGenId);
+        }
+//        RecyclerViewFragment obj = new RecyclerViewFragment();
+//        List<ModelClass> taskList = obj.taskList;
+//        ModelClass model = new ModelClass();
+//        model.setTask(taskText);
+//        model.setId(autoGenId);
+//        model.setStatus(0);
+//        taskList.add(model);
+//        obj.appendToList(taskText, autoGenId);
     }
 }

@@ -39,6 +39,7 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
         this.context = context;
     }
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -57,12 +58,12 @@ public class AddNewTaskDialog extends BottomSheetDialogFragment {
                 String taskText = newTaskText.getText().toString();
                 if (!taskText.isEmpty()) {
                     long genid = databaseHelper.tasksDAO().insertTask(new Tasks(taskText, 0));
-                    dismiss();
-//                    fragm.appendToList(taskText, genid);
 
+//                    ((MainActivity)context).add(taskText, genid);
                     if (listener != null) {
                         listener.onTaskAdded(taskText, genid);
                     }
+                    dismiss();
                 }
                  else {
                     Toast.makeText(getContext(), "Empty Task", Toast.LENGTH_SHORT).show();
